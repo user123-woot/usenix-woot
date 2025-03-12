@@ -1,0 +1,98 @@
+20.2.2025
+---------config generator logic-----
+    - Each client consist of 2 different configs which are combined: rce/exfil and adversarial requirements
+    - Both will be generated in client side and send to server but server will control on execution of each and their termination conditions
+    - After client is connected, it sends client_config including: underlaying limit,termination condition, src2dst/dst2src_max_ps
+    - Then client_config would be added to the generated config in server side 
+    - This way allows us to dynamically run bots with different config and criteria while capturing pcap
+    - Why in client side? because client is dynamic created and deleted but server is run one time for ever, thus hard to manage different dynamic config requirements
+
+
+11.2.2025
+- check underlying parmams update in whole c2 
+- run code with/without underlaying critera  
+- max_ps is not working
+- logging for client + logging server in folder and differ name for each client + log sniff underalying in a seperated log file
+- reduce the probability of exfil video (done)
+----------
+10.2.2025
+ client contoroll: for-loop vs while
+ 1- for-loop: when we know what commands going to be executed + we can set IAT 
+ 2- while: when we do not know what to exect but we want to controll the loop by for example exceeding to some upper level 
+ 3- consider both each has reach sooner 
+------
+9.2.2025
+- define c2 bot intractions
+bot send initial connections c2<----bot
+then:
+a) c2 creates bot objects and actions 
+b) take the fist action from list of randomlay generated and send to bot c2--->bot
+c) bot execute and reply the result and all packet/byte exchange monitored by server
+d) scr2dst_packets = 1000 should be consiedred as one actionto be executed 
+e) the criteria to finish a communication is its limit on underlaying config only. 
+   Beacuse Number of executed acitons is not the case. 
+   If there is no undderlaying config then the flow is continued at least 5-15 minutes 
+
+Criterias:
+    if pertube:
+        the main factor to terminate is reaching params in pertube values
+        which can be either before executing e.g. src2dst_packets action or after it 
+        IAT = 1 
+    else:
+        if flow duration is not set 
+            execute all actions and then finish with IAT= rnd(1-3) seconds 
+        elif flow duration is set
+            define IAT among those actions in the list to full fill flow durations
+            hence, IAT = flow duration / number of actions 
+
+
+- logging 
+- multiple clients handeling by name 
+====GPT desctioption=====
+WebSocket Client
+Initiates the connection.
+Executes commands sent by the server.
+Sends back execution results to the server.
+Stops communication when the monitored limits are exceeded.
+WebSocket Server
+
+Accepts client connections.
+Sends commands to the client.
+Receives responses and tracks statistics.
+Terminates the connection when predefined criteria are met.
+Monitoring & Termination Controller
+
+A method that tracks:
+Number of packets sent/received.
+Total bytes transmitted.
+Packet size constraints.
+Terminates the connection when any threshold is reached.
+
+==================
+
+
+-----
+8.2.2025
+1-define the communication attributes and sequence  
+- client send initial request 
+- c2 create a config and send back to client
+- any further communications would follow that config
+- Client only execute recived commands and give back results following the pertubation attributes  
+
+requirement:
+1- create a function to take config file (done)
+2- creat a communication class to add action, underlay, and scheduling (done)
+
+------
+6.2.2025
+Overview:
+considering different requiremets as follows, decided to first start with websocket
+1) flexibility for gan projection, where purturbe value independent of direction can be fullfilled which is so challenging through http 
+2) In gan integration we want to to relize each perturbe among various bot config accoriding to gan training batch size. 
+So for each generated pertube if it is valide we generate various items to make flows and fullfil pertube value 
+3) we come up with factory design pattern to develop it. (the other option was builder which is suit for more complex objects)
+
+Steps:
+1) build initial websocket connection
+2) adpat it to factory design pattern
+3) define required methods 

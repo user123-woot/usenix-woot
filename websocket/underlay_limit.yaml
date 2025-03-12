@@ -1,0 +1,6 @@
+'src2dst_packets': 100,
+'src2dst_bytes': 50000,
+'src2dst_max_ps': 12662,
+'dst2src_packets': 100,
+'dst2src_bytes': 60000,
+'dst2src_max_ps': 12344

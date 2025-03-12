@@ -1,0 +1,3 @@
+Here we put all requirements for this traffic generator
+
+- update config gen, we might not have any exfil at all ==> assumption: attacker would conduct RCE for discovery but not exfil necessary

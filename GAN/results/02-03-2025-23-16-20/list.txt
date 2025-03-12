@@ -1,0 +1,10 @@
+[['dst2src_bytes', 'src2dst_max_ps'],
+['dst2src_packets', 'dst2src_max_ps'],
+['src2dst_bytes', 'dst2src_bytes'],
+['src2dst_bytes', 'dst2src_max_ps'],
+['src2dst_bytes', 'dst2src_packets'],
+['src2dst_bytes', 'src2dst_max_ps'],
+['src2dst_packets'],
+['src2dst_packets', 'dst2src_max_ps'],
+['src2dst_packets', 'src2dst_bytes'],
+['src2dst_packets', 'src2dst_max_ps']]
