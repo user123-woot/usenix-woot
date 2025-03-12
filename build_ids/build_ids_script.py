@@ -1,8 +1,4 @@
-# This is the new version of build_ids class, where we can build or load previously saved model as ids
-# There are two kind of models nn based (cnn) vs all sklearn based. So, we define each model in oop_code.py
-# Then, we call them here. Two main methods for training 1) train on single input ds 2) train in kfold
-# In any case once an ids is build a folder is created for it
-# How it differ from previous version? change in feature set, using pipeline for scaling + using oop_code class
+
 import random
 import joblib
 from sklearn.pipeline import make_pipeline
@@ -390,58 +386,3 @@ class build_ids:
 
 
 
-def main():
-    # config_addr = '/home/mehrdad/PycharmProjects/GAN-Framework/dataset/UNSW/unsw_config.yaml'
-    # ids = build_ids(config_addr)
-    # #ids.ids_train_evaluate_kfold('knn',eval2save=True)
-    # ds_loader = Dataset()
-    # train_x = ds_loader.load_train_ds(ids.config["whole_training"])#.sample(1000)
-    # y_train = train_x.loc[:, train_x.columns == 'label'].values.ravel('F')
-    # test = ds_loader.load_test_ds(ids.config["deployment_test"])#.sample(2000)
-    # y_test = test.loc[:, test.columns == 'label'].values.ravel('F')
-    # new_ids = RandomForestClassifier()
-    # new_ids.set_params(**{'n_jobs':-1, 'max_depth': 8, 'max_features': 'sqrt', 'min_samples_leaf': 2, 'min_samples_split': 4, 'n_estimators': 242})
-    # ids.ids_train(new_ids,'rf', train_x, y_train, "/home/mehrdad/PycharmProjects/GAN-Framework/transferability/results/UNSW_final_results_11-05-2023-14-07-10/deployment/",save_model=False) # save model is false as we save itin predic
-    # ids.ids_predict('knn',test, y_test, save_predict=True, eval2save= True,test_ds_name='unsw')
-    model = build_ids(config_addr='/home/mehrdad/PycharmProjects/C2_communication/build_ids/config.yaml')
-    #model.ids_train_evaluate_kfold('cnn', eval2save=True)
-    ds = Dataset()
-    ids = model.load_ids('cnn',
-                         "/media/sf_GAN_output/red-teaming-10-Sep-2023/4.comparison_with_CICIDSandUNSW/New DS/results/k-fold/Building_CNN_on_red_team_Kfold_results_16-09-2023-20-12-43/fold0/cnn/model/cnn_model",
-                         "/media/sf_GAN_output/red-teaming-10-Sep-2023/4.comparison_with_CICIDSandUNSW/New DS/ds_combined/train0.csv",
-                         "/media/sf_GAN_output/red-teaming-10-Sep-2023/4.comparison_with_CICIDSandUNSW/New DS/results/")
-    ds_addr = "/home/mehrdad/PycharmProjects/GAN-Framework/dataset/CICIDS/nested-kfold/deployment_test/"
-    train_list = [
-        ds_addr + "deployment_test.csv"
-        # ds_addr +"labeled_sc-1_filtered_Normal_bruteforce_exfiltrate-C2-http.csv",
-        # ds_addr +"labeled_sc-5_filtered_Normal_exploit-http-smb-netbios-ssn.csv",
-        # ds_addr +"labeled_sc-8_filtered_Normal_exploit_win_ICMP-exfil_SMTP.csv",
-        # ds_addr +"labeled_sc-10_filtered_Normal_general-scans.csv",
-        # ds_addr +"labeled_sc-3_filtered_Normal_brute-ssh_exfil-SCP.csv",
-        # ds_addr +"labeled_sc-7_filtered_Normal_exploit-postgresQL-FTP-samba.csv",
-        # ds_addr +"labeled_attack_http_exfil_filtered.csv",
-        # ds_addr +"labeled_http_beaconig_9_bots_and_cmd.csv",
-        # ds_addr +"labeled_http_beaconig_9_bots.csv" ,
-        # ds_addr +"labeled_attack_ddos_filtered.csv" ,
-        # ds_addr + "labeled_sc-2_normal_tr_dns-exfil.csv",
-        # ds_addr +"labeled_sc-9_filtered_normal_tr_lat_mov_DDoS.csv",
-        # ds_addr + "labeled_sc-4_filtered_Normal_brute-telnet_exfil-FTP.csv",
-        # ds_addr + "labeled_sc-13_filtered_gradual_CD_bruteforce-SSH_Exfil-DNS.csv",
-        # ds_addr + "labeled_sc-12_filtered_gradual_CD_bruteforce-SSH_Exfil-C2.csv",
-        # ds_addr + "labeled_sc-15_filtered_gradual_CD_bruteforce-telnet_Exfil-FTP.csv",
-        # ds_addr + "labeled_sc-16_filtered_periodic_CD_without_attack.csv",
-        # ds_addr + "labeled_attack_dns_exfil_filtered.csv",
-        # ds_addr + "labeled_sc-11_filtered_Normal_web-browsing.csv",
-        # ds_addr + "labeled_sc-6_normal_tr.csv",
-        # ds_addr + "labeled_sc-14_filtered_web_traffic-wget-.csv",
-
-    ]
-
-    for item in train_list:
-        test = ds.load_test_ds(item)
-        model.ids_predict('cnn', test.loc[:, test.columns != 'label'],
-                          test.loc[:, test.columns == 'label'].values.ravel(),
-                          True, True, False, item.removeprefix(ds_addr))
-if __name__ ==  "__main__":
-    #pass
-    main()
