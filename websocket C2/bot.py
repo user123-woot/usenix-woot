@@ -139,7 +139,7 @@ async def main():
         tcpdump_process = start_tcpdump("lo", f"websocket/pcap/file_{current_time}.pcap")
     
     #-------------loading pertube config and declearining termination and underlaying limit
-    yaml_file = script_dir / 'output.yaml' #"/home/mehrdad/PycharmProjects/C2_communication/GAN/output.yaml"
+    yaml_file = script_dir / 'output.yaml' 
     underlay_limit = { 'src2dst_packets': 0, 'src2dst_bytes': 0, 'src2dst_max_ps': 0, 'dst2src_packets': 0, 'dst2src_bytes': 0, 'dst2src_max_ps': 0 }
     with open(yaml_file, 'r') as file:
         try:
