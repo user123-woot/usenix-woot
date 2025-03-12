@@ -1,11 +1,6 @@
-# This is the new version of build_ids class, where we can build or load previously saved model as ids
-# There are two kind of models nn based (cnn) vs all sklearn based. So, we define each model in oop_code.py
-# Then, we call them here. Two main methods for training 1) train on single input ds 2) train in kfold
-# In any case once an ids is build a folder is created for it
-# How it differ from previous version? change in feature set, using pipeline for scaling + using oop_code class
 import random
 import sys 
-sys.path.append("/home/mehrdad/PycharmProjects/C2_communication/nids/library")
+sys.path.append("/C2_communication/nids/library")
 from sklearn.pipeline import make_pipeline
 from sklearn.preprocessing import MinMaxScaler ,FunctionTransformer
 from sklearn.ensemble import  RandomForestClassifier
@@ -304,7 +299,7 @@ class build_ids:
         print(f"AUROC:{auroc}")
         # ----- save results
         if eval2save:
-            report2save ="/home/mehrdad/PycharmProjects/GAN-Framework/transferability/all_c2_results_advr_feature_exclusion2/"
+            report2save ="/GAN-Framework/transferability/all_c2_results_advr_feature_exclusion2/"
             self.add2results(report2save+'/all_excluding_advr_feature_results.csv', model_name=ids_name ,train_ds_name=train_x_name, precision= precision,recall= recall,
             f1=f1, tn=tn, fp=fp, fn=fn, tp=tp, tpr=tpr, fpr=fpr, fdr=fdr,fnr= fnr, tnr=tnr,auroc=auroc,train_time=self.train_time, test_time=self.test_time ,
             description = test_ds_name, feature_set = f"excluded feature from target:{feature_group}")
@@ -435,70 +430,3 @@ def list_csv_files(directory):
             if file.endswith('.csv'):
                 csv_files.append(os.path.join(root, file))
     return csv_files
-def main():
-    
-    def check_keywords(text, keywords): 
-        found_keywords = [keyword for keyword in keywords if keyword in text] 
-        return found_keywords
-    common_col = pd.read_csv("/home/mehrdad/PycharmProjects/GAN-Framework/dataset/all_c2/train_NoDup_shuffeled_combinations/train_NoDup_shuffeled.csv").columns.to_list()
-    
-    full_adv_features = ["src2dst_packets", "src2dst_bytes","dst2src_packets","dst2src_bytes","src2dst_min_ps",
-    "src2dst_max_ps","dst2src_min_ps","dst2src_max_ps"]
-    top_important_feature = ["src2dst_min_ps","dst2src_bytes", "dst2src_packets","src2dst_max_ps"]
-    adversaril_feature_list = [([item for item in common_col if item not in full_adv_features]), ([item for item in common_col if item not in top_important_feature])]
-    #adversaril_feature_list = [([item for item in common_col if item not in top_important_feature])]
-
-    
-    report2save ="/home/mehrdad/PycharmProjects/GAN-Framework/transferability/all_c2_results_advr_feature_exclusion2/"
-    ids_list = ["cnn", "rf", "knn"]
-    directory = '/home/mehrdad/PycharmProjects/GAN-Framework/dataset/all_c2/all_test/test/garbage' # test data main folder to read all csv inside
-    test_addr_list = list_csv_files(directory) # return all test csv in all subfolders  
-    #train_addr_list = file_address_resolver("/home/ubuntu/python-project/pcap/target_ids_eval_data/train/train_combination_with_c2/second_time_selected", "csv")
-    train_addr_list = ["/home/mehrdad/PycharmProjects/GAN-Framework/dataset/all_c2/train_ds/training_benign_malicios_shuffle_dup/balanced_train_and_3%_athen_and_redteam.csv",
-                       "/home/mehrdad/PycharmProjects/GAN-Framework/dataset/all_c2/train_ds/training_benign_malicios_shuffle_dup/balanced_train_and_3%_empire_and_redteam.csv",
-                       "/home/mehrdad/PycharmProjects/GAN-Framework/dataset/all_c2/train_ds/training_benign_malicios_shuffle_dup/balanced_train_and_3%_freyja_and_redteam.csv"]
-    
-   
-    
-    for ids_name in ids_list: 
-
-        for i in range(1, len(full_adv_features) + 1):
-            # Consider the first `i` items in the list
-            subset = full_adv_features[:i]
-            adversaril_feature_list = [([item for item in common_col if item not in full_adv_features[:i]])]
-            #print(f"Iteration {i}: {len(adversaril_feature_list[0])}")
-            print(len(adversaril_feature_list[0]))
-            #for i, feature_group in enumerate(adversaril_feature_list):
-            """
-            for train_addr in train_addr_list:
-                train_x = pd.read_csv(train_addr).loc[:, adversaril_feature_list[0]]#.sample(100)
-                name, _ = os.path.splitext(os.path.basename(train_addr)) #takes file name from the address and then split name and extension 
-                train_x_name= check_keywords(name,["athen","freyja","empire"] )
-
-                ids = build_ids()
-                ids.ids_build_tune_train(f"{ids_name}", train_ds_name=f"{train_x_name}", train_x=train_x.loc[:, train_x.columns != 'label'],
-                    y_train= train_x.loc[:, train_x.columns == 'label'],
-                    addr2save=report2save ,
-                    model2save=True)
-                for test_addr in test_addr_list:
-                        test_file_name, _ = os.path.splitext(os.path.basename(test_addr)) #takes file name from the address and then split name and extension 
-                        test = pd.read_csv(f"{test_addr}").loc[:,adversaril_feature_list[0]]
-                        ids.ids_predict(f"{ids_name}", test_x=test.loc[:, test.columns != 'label'],
-                                        test_y=test.loc[:, test.columns == 'label'],
-                                        save_predict=True, eval2save=True, test_ds_name=f"{test_file_name}", save_model=False, train_x_name= train_x_name, feature_group=subset)
-                        
-                del  test
-                gc.collect()
-            
-        del ids,train_x
-        gc.collect()
-        """
-
-
-
-
-
-
-if __name__ ==  "__main__":
-    pass
-    #main()
