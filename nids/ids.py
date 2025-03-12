@@ -5,14 +5,14 @@ from sklearn.model_selection import train_test_split
 import yaml
 import numpy as np
 #------load config
-config_addr = yaml.safe_load("/home/mehrdad/PycharmProjects/C2_communication/nids/ids_config.yaml")
+config_addr = yaml.safe_load("/C2_communication/nids/ids_config.yaml")
 try:
     with open(config_addr, 'r') as file:
         config = yaml.safe_load(file)
 except Exception as e:
      print(f"An error occurred: {e}")
 #--------------report addr
-report2save= "/home/mehrdad/PycharmProjects/C2_communication/nids/train-test/"
+report2save= "/C2_communication/nids/train-test/"
 
 #-----load ds
 df = pd.read_csv(config["redteam_ds"])#.sample(1000)
