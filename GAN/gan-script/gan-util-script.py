@@ -126,26 +126,3 @@ class gan_util:
         with open(yaml_file, 'w') as file:
             # Using 'default_flow_style=True' to write the dictionary in a single line (compact format)
             yaml.dump(existing_data, file, default_flow_style=True, allow_unicode=True)
-
-if __name__ == "__main__":
-    #main()
-    pass
-
-
-
-utile = gan_util()
-addr = "/home/mehrdad/PycharmProjects/C2_communication/GAN/results/02-03-2025-23-16-20/selected_perturbed/"
-yaml_file = '/home/mehrdad/PycharmProjects/C2_communication/GAN/output.yaml'
-csv_list = utile.list_csv_files(addr)
-
-for csv in csv_list:
-    data = pd.read_csv(addr+csv)
-    print(utile.extract_data_from_filename(csv))
-    common_values = utile.find_common_values_in_range(data)
-    utile.df_to_yaml(yaml_file="/home/mehrdad/PycharmProjects/C2_communication/GAN/note-book/output.yaml",
-                     df= common_values.sample(100), filename=csv)
-    #print(common_values.sample(100).to_dict(orient='list'))
-
-
-
-    
