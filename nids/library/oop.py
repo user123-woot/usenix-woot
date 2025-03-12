@@ -456,42 +456,5 @@ class rf_model( RandomForestClassifier):
                                n_minimum_search=int(1e8))
             plt.show()
         return  self.optimizer.best_params_
-        #print("test score: %s" % self.optimizer.score(X_test, y_test))
-        #super().__init__()
-        """
-        RandomForestClassifier.__init__(self): This directly calls the constructor of the RandomForestClassifier class 
-        and initializes the object. It is an explicit way of initializing the base class and can be useful in certain 
-        scenarios where you want to specifically call the base class constructor with custom arguments.
 
-        super().__init__: This is a more flexible and recommended approach for initializing the base class. 
-        It allows you to call the constructor of the immediate base class without explicitly mentioning the class name.
-         It automatically determines the base class based on the inheritance hierarchy. By using super().__init__, you 
-         ensure that the initialization process goes through all the necessary steps defined by the inheritance chain.
 
-        In most cases, it is preferred to use super().__init__ because it provides a more maintainable and flexible way 
-        of initializing the base class, especially in scenarios where you have multiple levels of inheritance. 
-        It allows you to easily update the inheritance hierarchy without modifying every constructor call.
-        """
-
-def main():
-    pipeline = make_pipeline(MinMaxScaler())
-    rf= rf_model()
-
-    train = rf.load_train_ds('/home/mehrdad/PycharmProjects/GAN-Framework/dataset/CICIDS/probe/probeXY_1000.csv')
-    #y_train = pd.read_csv('/home/mehrdad/PycharmProjects/GAN-Framework/transferability/model_extraction_results/results_10-01-2023-18-27-00/subs_model/target-rf_unsw_probe_unsw_100_subs-rf/labeled_probe_class_prediction')
-    param = rf.tune(5,32)
-    rf.set_params(**param)
-    y_train = train.loc[:, train.columns == 'label'].values.ravel('F')
-    x_train_transformed = pipeline.fit_transform(train.loc[:, train.columns != 'label'])
-
-    test = rf.load_test_ds('/home/mehrdad/PycharmProjects/GAN-Framework/dataset/UNSW/split/nested-kfold/deployment_test/deployment_test.csv')
-
-    y_test = test.loc[:, test.columns == 'label'].values.ravel('F')
-    x_test_transformed = pipeline.transform(test.loc[:, test.columns != 'label'])
-
-    rf.fit(x_train_transformed,y_train)
-    xyhat = rf.predict(x_test_transformed)
-    print (rf.fbeta(y_predict=xyhat, y_true=y_test))
-if __name__ == "__main__":
-    #main()
-    pass
