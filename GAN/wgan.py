@@ -136,7 +136,7 @@ class train_wgan_gp:
 
     def combiner(self,immutable_part,perturbed_adversarial_feature ):
         # the concat pf purturbe and immutable part should be based on correct original column order 
-        reference_df = pd.read_csv("/home/mehrdad/PycharmProjects/GAN-Framework/dataset/red-team2/deployment_ds/red-team2_merge.csv")
+        reference_df = pd.read_csv("red-team2_merge.csv")
         reference_df.drop('label', axis=1, inplace=True)  
         perturbed_df = pd.DataFrame(perturbed_adversarial_feature, columns=self.adversarial_feature)
         
@@ -274,15 +274,15 @@ class train_wgan_gp:
                 break
 def main():
 
-    with open("/home/mehrdad/PycharmProjects/C2_communication/GAN/gan_config.yaml", "r") as file:
+    with open("/C2_communication/GAN/gan_config.yaml", "r") as file:
         config = yaml.safe_load(file)
-    df = pd.read_csv("/home/mehrdad/PycharmProjects/C2_communication/dataset/combined-benign-malcious/benign_deepred-autoc2-2-3-2025-001.csv").loc[:,config["features"]]
+    df = pd.read_csv("/C2_communication/dataset/combined-benign-malcious/benign_deepred-autoc2-2-3-2025-001.csv").loc[:,config["features"]]
     currenc_time= time.strftime("%d-%m-%Y-%H-%M-%S")
-    os.mkdir(f"/home/mehrdad/PycharmProjects/C2_communication/GAN/results/{currenc_time}")
+    os.mkdir(f"/C2_communication/GAN/results/{currenc_time}")
 
     for adv_feature in config["repeated_adversarial_features"]:
-        os.mkdir(f"/home/mehrdad/PycharmProjects/C2_communication/GAN/results/{currenc_time}/{adv_feature}")
-        result_folder = f"/home/mehrdad/PycharmProjects/C2_communication/GAN/results/{currenc_time}/{adv_feature}/"
+        os.mkdir(f"//C2_communication/GAN/results/{currenc_time}/{adv_feature}")
+        result_folder = f/C2_communication/GAN/results/{currenc_time}/{adv_feature}/"
         latent_dim = 100
         mutable_size = len(adv_feature)
         immutable_size = df.shape[1]-mutable_size - 1 #1 is for label
