@@ -9,7 +9,7 @@ The GIF below demonstrates the DeepRed C2 framework in action. On the left side,
 ![2025-03-16 19-48-32](https://github.com/user-attachments/assets/448b5ca4-2849-40af-b2da-41f780ce298a)
 
 
-# Sample Proposed Dataset
+# Sample of the Proposed RedTeam Dataset
 In the "dataset" folder, we have included a subset of the dataset in CSV format, along with sample benign and C2 raw traffic in PCAP files. The full dataset is too large to be included here. Once the paper is accepted, the original PCAP files will be uploaded to the appropriate repository.
 Malicious IP:PORT
 - Caldera C2 Server: 10.11.54.37:8888
