@@ -1,4 +1,4 @@
-# C2_communication
+# DeepRed C2 Framework
 This repository contains the files used to develop the C2 framework prposed for the USENIX WOOT 2025. To run the C2 framework, navigate to the "websock_c2" directory, start the c2-sniffer to launch the server, and then connect the bot to it.
 
 It is important to ensure all required dependencies are installed beforehand, and to configure the IP addresses for both the C2 server and the bot.
